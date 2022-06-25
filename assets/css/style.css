@@ -1,0 +1,23 @@
+:root{
+    --primary-color: purple;
+    --secondary-color: magenta;
+    --black: black;
+}
+*{
+    box-sizing: border-box;
+}
+
+header{
+    margin: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+header a{
+    text-decoration: none;
+    color: var(--secondary-color);
+}
+.start-screen {
+    margin: auto;
+    text-align: center;
+}
