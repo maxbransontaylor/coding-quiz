@@ -1,9 +1,12 @@
 var counter = 0;
+var timer = document.querySelector("#counter");
 var bodyEl = document.querySelector("body");
 var startScreenEl = "";
 var questionEL = "";
 var questionNameEl = "";
 var questionCounter = 0;
+var rightOrWrong = "";
+var gameOver = false;
 var questions = [
   {
     name: "String values must be enclosed within ____ when being assigned to variables.",
@@ -60,6 +63,7 @@ var generateQuestion = function () {
 };
 
 var startGame = function () {
+  gameOver = false;
   startScreenEl.remove();
   questionEL = document.createElement("div");
   questionNameEl = document.createElement("h1");
@@ -73,17 +77,21 @@ var startGame = function () {
     orderedListEl.appendChild(listItemEl);
   }
   questionEL.appendChild(orderedListEl);
+  rightOrWrong = document.createElement("h2");
+
   bodyEl.appendChild(questionEL);
+  rightOrWrong.id = "rightwrong";
+  bodyEl.appendChild(rightOrWrong);
   generateQuestion();
   counter = 60;
-  document.querySelector("#counter").textContent = counter;
+  timer.textContent = counter;
   t = setInterval(function () {
-    if (counter > 0) {
+    if (counter > 0 && !gameOver) {
       counter--;
-      document.querySelector("#counter").textContent = counter;
+      timer.textContent = counter;
     } else {
-      console.log("endgame");
       clearInterval(t);
+      endGame();
     }
   }, 1000);
 };
@@ -94,18 +102,25 @@ var nextQuestion = function (event) {
   if (targetEl.matches(".options")) {
     if (questionCounter < questions.length - 1) {
       if (targetEl.textContent === questions[questionCounter].correct) {
-        console.log("correct");
+        rightOrWrong.textContent = "Correct!";
       } else {
-        console.log("incorrect");
+        rightOrWrong.textContent = "Incorrect!";
+        counter -= 10;
+        timer.textContent = counter;
       }
 
       questionCounter++;
       generateQuestion();
     } else {
-      console.log("DONE");
+      gameOver = true;
+      endGame();
     }
   }
 };
+var endGame = function () {
+  questionEL.remove();
+};
+
 initialScene();
 startScreenEl.addEventListener("click", gameStartHandler);
 bodyEl.addEventListener("click", nextQuestion);
