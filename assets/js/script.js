@@ -40,6 +40,7 @@ var questions = [
   },
 ];
 var initialScene = function () {
+  counter = 0;
   startScreenEl = document.createElement("div");
   startScreenEl.className = "start-screen";
   startScreenEl.innerHTML =
@@ -88,7 +89,7 @@ var startGame = function () {
   t = setInterval(function () {
     if (counter > 0 && !gameOver) {
       counter--;
-      timer.textContent = counter;
+      timer.textContent = Math.max(0, counter);
     } else {
       clearInterval(t);
       endGame();
@@ -106,7 +107,7 @@ var nextQuestion = function (event) {
       } else {
         rightOrWrong.textContent = "Incorrect!";
         counter -= 10;
-        timer.textContent = counter;
+        timer.textContent = Math.max(0, counter);
       }
 
       questionCounter++;
