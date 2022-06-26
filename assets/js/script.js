@@ -1,12 +1,14 @@
 var counter = 0;
 var timer = document.querySelector("#counter");
-var bodyEl = document.querySelector("body");
+var mainBodyEl = document.querySelector("body");
 var startScreenEl = "";
 var questionEL = "";
 var questionNameEl = "";
+endScreenEl = "";
 var questionCounter = 0;
 var rightOrWrong = "";
 var gameOver = false;
+var highscores = [];
 var questions = [
   {
     name: "String values must be enclosed within ____ when being assigned to variables.",
@@ -45,7 +47,7 @@ var initialScene = function () {
   startScreenEl.className = "start-screen";
   startScreenEl.innerHTML =
     "<h1>Coding Quiz Challenge</h1><p>Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your score/time by ten seconds! </p><button class ='btn' id= 'startbtn'>Start game</button>";
-  bodyEl.appendChild(startScreenEl);
+  mainBodyEl.appendChild(startScreenEl);
 };
 var gameStartHandler = function (event) {
   var targetEl = event.target;
@@ -80,9 +82,9 @@ var startGame = function () {
   questionEL.appendChild(orderedListEl);
   rightOrWrong = document.createElement("h2");
 
-  bodyEl.appendChild(questionEL);
+  mainBodyEl.appendChild(questionEL);
   rightOrWrong.id = "rightwrong";
-  bodyEl.appendChild(rightOrWrong);
+  mainBodyEl.appendChild(rightOrWrong);
   generateQuestion();
   counter = 60;
   timer.textContent = counter;
@@ -122,18 +124,29 @@ var nextQuestion = function (event) {
 };
 var endGame = function () {
   questionEL.remove();
-  var endScreenEl = document.createElement("div");
+  endScreenEl = document.createElement("div");
   endScreenEl.innerHTML =
     "<h1>All done!</h1><p>Your final score is " +
     counter +
     "</p><form><input type='text' name='initials' placeholder='Enter Your Initials' /><button class='btn' id='save-initials'>Submit</button>";
-  bodyEl.appendChild(endScreenEl);
+  mainBodyEl.appendChild(endScreenEl);
 };
 var submitScoreHandler = function (event) {
   event.preventDefault();
+  var savedScores = localStorage.getItem("highscores") || [];
+  console.log(savedScores);
+  if (savedScores) {
+    highscores = savedScores;
+  }
+  var initials = document.querySelector("input[name='initials']").value;
+  var highScoreObj = { name: initials, score: counter };
+  highscores.push(highScoreObj);
+  localStorage.setItem("highscores", JSON.stringify(highscores));
+  endScreenEl.remove();
+  window.location = "highscores.html";
 };
 
 initialScene();
 startScreenEl.addEventListener("click", gameStartHandler);
-bodyEl.addEventListener("click", nextQuestion);
-bodyEl.addEventListener("submit", submitScoreHandler);
+mainBodyEl.addEventListener("click", nextQuestion);
+mainBodyEl.addEventListener("submit", submitScoreHandler);
