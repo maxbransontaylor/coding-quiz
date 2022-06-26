@@ -90,6 +90,8 @@ var startGame = function () {
     if (counter > 0 && !gameOver) {
       counter--;
       timer.textContent = Math.max(0, counter);
+    } else if (gameOver) {
+      clearInterval(t);
     } else {
       clearInterval(t);
       endGame();
@@ -120,8 +122,18 @@ var nextQuestion = function (event) {
 };
 var endGame = function () {
   questionEL.remove();
+  var endScreenEl = document.createElement("div");
+  endScreenEl.innerHTML =
+    "<h1>All done!</h1><p>Your final score is " +
+    counter +
+    "</p><form><input type='text' name='initials' placeholder='Enter Your Initials' /><button class='btn' id='save-initials'>Submit</button>";
+  bodyEl.appendChild(endScreenEl);
+};
+var submitScoreHandler = function (event) {
+  event.preventDefault();
 };
 
 initialScene();
 startScreenEl.addEventListener("click", gameStartHandler);
 bodyEl.addEventListener("click", nextQuestion);
+bodyEl.addEventListener("submit", submitScoreHandler);
