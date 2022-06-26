@@ -61,7 +61,8 @@ var generateQuestion = function () {
   questionNameEl.textContent = questions[questionCounter].name;
   for (var i = 0; i < 4; i++) {
     var answerChoice = document.querySelector("#option" + i);
-    answerChoice.textContent = questions[questionCounter].options[i];
+    answerChoice.textContent =
+      i + 1 + ". " + questions[questionCounter].options[i];
   }
 };
 
@@ -72,6 +73,7 @@ var startGame = function () {
   questionNameEl = document.createElement("h1");
   questionEL.appendChild(questionNameEl);
   var orderedListEl = document.createElement("ol");
+  orderedListEl.id = "question list";
 
   for (var i = 0; i < 4; i++) {
     var listItemEl = document.createElement("li");
@@ -133,10 +135,11 @@ var endGame = function () {
 };
 var submitScoreHandler = function (event) {
   event.preventDefault();
-  var savedScores = localStorage.getItem("highscores") || [];
+  var savedScores = localStorage.getItem("highscores");
   console.log(savedScores);
   if (savedScores) {
     highscores = savedScores;
+    highscores = JSON.parse(highscores);
   }
   var initials = document.querySelector("input[name='initials']").value;
   var highScoreObj = { name: initials, score: counter };
