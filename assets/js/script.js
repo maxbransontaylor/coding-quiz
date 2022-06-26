@@ -61,8 +61,7 @@ var generateQuestion = function () {
   questionNameEl.textContent = questions[questionCounter].name;
   for (var i = 0; i < 4; i++) {
     var answerChoice = document.querySelector("#option" + i);
-    answerChoice.textContent =
-      i + 1 + ". " + questions[questionCounter].options[i];
+    answerChoice.textContent = questions[questionCounter].options[i];
   }
 };
 
@@ -93,7 +92,8 @@ var startGame = function () {
   t = setInterval(function () {
     if (counter > 0 && !gameOver) {
       counter--;
-      timer.textContent = Math.max(0, counter);
+      counter = Math.max(0, counter);
+      timer.textContent = counter;
     } else if (gameOver) {
       clearInterval(t);
     } else {
@@ -113,7 +113,8 @@ var nextQuestion = function (event) {
       } else {
         rightOrWrong.textContent = "Incorrect!";
         counter -= 10;
-        timer.textContent = Math.max(0, counter);
+        counter = Math.max(0, counter);
+        timer.textContent = counter;
       }
 
       questionCounter++;
@@ -143,6 +144,10 @@ var submitScoreHandler = function (event) {
   }
   var initials = document.querySelector("input[name='initials']").value;
   var highScoreObj = { name: initials, score: counter };
+  if (!highScoreObj.name) {
+    window.alert("Please enter your initials!");
+    return false;
+  }
   highscores.push(highScoreObj);
   localStorage.setItem("highscores", JSON.stringify(highscores));
   endScreenEl.remove();

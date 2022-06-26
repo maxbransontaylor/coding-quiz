@@ -34,6 +34,7 @@ header a{
     margin-bottom: 5px;
 }
 .btn{
+    max-width: fit-content;
     outline: none;
     border: none;
     background-color: var(--primary-color);
@@ -48,4 +49,7 @@ header a{
     color: grey;
     opacity: 80%;
     font-style: italic;
+}
+.score-item:first-child{
+    background-color: lavender;
 }
